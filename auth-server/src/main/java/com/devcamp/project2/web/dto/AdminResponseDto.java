@@ -9,19 +9,19 @@ import java.util.List;
 
 @Getter
 @Setter
-public class AdminDto {
+public class AdminResponseDto {
     int code;
     String message;
     List<User> userList;
 
     @Builder
-    AdminDto(int code,String message,List userList){
+    AdminResponseDto(int code,String message,List userList){
         this.code=code;
         this.message=message;
         this.userList=userList;
     }
 
-    AdminDto(int code,String message){
+    AdminResponseDto(int code,String message){
         this.code=code;
         this.message=message;
     }

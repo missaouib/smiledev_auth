@@ -4,7 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.devcamp.project2.domain.login.User;
 import com.devcamp.project2.domain.login.UserRepository;
-import com.devcamp.project2.web.dto.AdminDto;
+import com.devcamp.project2.web.dto.AdminDeleteRequestDto;
+import com.devcamp.project2.web.dto.AdminResponseDto;
 import com.devcamp.project2.web.dto.CommonResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -24,25 +25,31 @@ public class AdminService {
     private final UserRepository userRepository;
 
     public long getIdFromToken(String token){
+        if(token.compareTo("null")==0)
+            return -1;
         DecodedJWT decodedJWT = JWT.decode(token);
         long id = decodedJWT.getClaim("id").asLong();
         return id;
     }
 
-    public AdminDto getUserList(String token){
+    public AdminResponseDto getUserList(String token){
         long id = getIdFromToken(token);
+        if(id==-1){
+            return AdminResponseDto.builder().code(201).message("권한이 없습니다.").build();
+        }
         User user=userRepository.findFirstById(id);
         if(user.getStatus()==0){
-            return AdminDto.builder().code(201).message("권한이 없습니다.").build();
+            return AdminResponseDto.builder().code(201).message("권한이 없습니다.").build();
         }
 
         List<User> userList=userRepository.findAll();
-        return AdminDto.builder().code(200).message("success").userList(userList).build();
+        return AdminResponseDto.builder().code(200).message("success").userList(userList).build();
     }
 
     @Transactional
-    public CommonResponseDto deleteUser(String token){
+    public CommonResponseDto deleteUser(String token, AdminDeleteRequestDto adminDeleteRequestDto){
         try {
+            long targetId = adminDeleteRequestDto.getUserId();
             long id = getIdFromToken(token);
             User user=userRepository.findFirstById(id);
             if(user==null){
@@ -52,9 +59,9 @@ public class AdminService {
                 return CommonResponseDto.builder().code(201).message("권한이 없습니다.").build();
             }//권한이 없는 경
 
-            if(userRepository.findFirstById(id)!=null) {
-                userRepository.deleteById(id);
-                return CommonResponseDto.builder().code(500).message("error").build();
+            if(userRepository.findFirstById(targetId)!=null) {
+                userRepository.deleteById(targetId);
+                return CommonResponseDto.builder().code(200).message("Success").build();
             }else {
                 return CommonResponseDto.builder().code(202).message("no user").build();
             }

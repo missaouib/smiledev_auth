@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
     private final LoginService loginService;
-    private final AdminService adminService;
 
     @PostMapping("/login")
     LoginResponseDto loginController(@RequestBody LoginRequestDto loginRequestDto) {
@@ -34,9 +33,11 @@ public class UserController {
         return loginService.emailVerify(randomString);
     }
 
-    @GetMapping("/admin")
-    AdminDto manageUserController(@RequestHeader(value = "token") String token){
-        return adminService.getUserList(token);
+    @PostMapping("/findPassword")
+    String findPasswordController(@PathVariable("randomString") String randomString){
+        return loginService.emailVerify(randomString);
     }
+
+
 
 }

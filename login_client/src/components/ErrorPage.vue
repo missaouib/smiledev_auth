@@ -1,5 +1,5 @@
 <template>
     <div>
-        <h1>Error! No Url</h1>
+        <h1>Error! No Authorization</h1>
     </div>
 </template>

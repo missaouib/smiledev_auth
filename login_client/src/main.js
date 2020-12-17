@@ -5,7 +5,7 @@ import ErrorPage from "./components/ErrorPage.vue"
 import MainPage from "./components/MainPage.vue"
 import Login from "./components/Login.vue"
 import Join from "./components/Join.vue"
-import MyPage from "./components/MyPage"
+import AdminPage from "./components/AdminPage"
 
 Vue.config.productionTip = false
 
@@ -18,7 +18,7 @@ const routes = [
         component: MainPage,
     },
     {
-        path: "/NoUrl",
+        path: "/NoAuth",
         name: "ErrorPage",
         component: ErrorPage,
     },
@@ -33,9 +33,9 @@ const routes = [
         component: Join,
     },
     {
-        path: "/myInfo",
-        name: "myinfo",
-        component: MyPage,
+        path: "/admin",
+        name: "admin page",
+        component: AdminPage,
     }
 ]
 
