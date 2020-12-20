@@ -2,6 +2,7 @@ package com.devcamp.project2.domain.login;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.persistence.*;
 
@@ -42,5 +43,12 @@ public class User {
 
     public void update(int verified){
         this.setVerified(verified);
+    }
+
+    public void changePassword(String password){
+        String salt = BCrypt.gensalt(8);
+        String hashedPassword = BCrypt.hashpw(password + salt, BCrypt.gensalt());
+        this.password=hashedPassword;
+        this.salt=salt;
     }
 }

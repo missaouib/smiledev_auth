@@ -1,4 +1,4 @@
-package com.devcamp.project2.web.dto;
+package com.devcamp.project2.web.dto.admin;
 
 import com.devcamp.project2.domain.login.User;
 import lombok.Builder;

@@ -1,8 +1,12 @@
 package com.devcamp.project2.web.contorller;
 
-import com.devcamp.project2.service.AdminService;
 import com.devcamp.project2.service.LoginService;
 import com.devcamp.project2.web.dto.*;
+import com.devcamp.project2.web.dto.findPassword.CertifyRequestDto;
+import com.devcamp.project2.web.dto.findPassword.CertifyResponseDto;
+import com.devcamp.project2.web.dto.findPassword.ChangePasswordRequestDto;
+import com.devcamp.project2.web.dto.findPassword.RequestFindPasswordDto;
+import com.devcamp.project2.web.dto.login.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -33,11 +37,29 @@ public class UserController {
         return loginService.emailVerify(randomString);
     }
 
-    @PostMapping("/findPassword")
-    String findPasswordController(@PathVariable("randomString") String randomString){
-        return loginService.emailVerify(randomString);
+    @PostMapping("/checkEmail")
+    boolean checkEmailController(@RequestBody CheckEmailRequestDto checkEmailRequestDto){
+        return loginService.checkDuplicate(checkEmailRequestDto);
     }
 
+    @PostMapping("/findPassword")
+    CommonResponseDto findPasswordController(@RequestBody RequestFindPasswordDto requestFindPasswordDto){
+        return loginService.requestFindPassword(requestFindPasswordDto);
+    }
 
+    @PostMapping("/checkCertification")
+    CertifyResponseDto checkCertificationController(@RequestBody CertifyRequestDto certifyRequestDto){
+        return loginService.checkCertification(certifyRequestDto);
+    }
+
+    @PostMapping("/changePassword")
+    CommonResponseDto changePasswordController(@RequestBody ChangePasswordRequestDto changePasswordRequestDto){
+        return loginService.changePassword(changePasswordRequestDto);
+    }
+
+    @PostMapping("/getNewToken")
+    MakeTokenResponseDto getNewTokenController(@RequestBody MakeTokenRequestDto makeTokenRequestDto){
+        return loginService.getNewToken(makeTokenRequestDto);
+    }
 
 }

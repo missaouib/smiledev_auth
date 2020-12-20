@@ -6,10 +6,14 @@ import MainPage from "./components/MainPage.vue"
 import Login from "./components/Login.vue"
 import Join from "./components/Join.vue"
 import AdminPage from "./components/AdminPage"
+import FindPasswordPage from "./components/FindPasswordPage"
+import ChangePasswordPage from "./components/ChangePasswordPage"
+import common from './assets/common'
 
 Vue.config.productionTip = false
 
 Vue.use(VueRouter);
+Vue.use(common);
 
 const routes = [
     {
@@ -34,8 +38,18 @@ const routes = [
     },
     {
         path: "/admin",
-        name: "admin page",
+        name: "adminpage",
         component: AdminPage,
+    },
+    {
+        path: "/findPassword",
+        name: "find_password",
+        component: FindPasswordPage,
+    },
+    {
+        path: "/changePassword",
+        name: "change_password",
+        component: ChangePasswordPage,
     }
 ]
 

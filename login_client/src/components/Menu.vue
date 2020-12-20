@@ -4,6 +4,7 @@
        <a href="#/join"> <span v-if="!isAuthenticated()">Join</span> </a>
        <a><span @click="onClickLogout()" v-if="isAuthenticated()">Logout</span></a>
        <a href="#/myInfo"><span v-if="isAuthenticated()">MY Info</span></a>
+       <a href="#/findPassword"><span v-if="!isAuthenticated()">Find Password</span></a>
     </div>
 </template>
 <style scoped>

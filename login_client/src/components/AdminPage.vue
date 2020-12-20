@@ -35,6 +35,14 @@ export default {
             },
         })
         .then((res)=>{
+            console.log(res);
+            //res.data.code==400
+            var a = 1;
+            console.log(a==1);
+            if(a==1){
+                this.newToken();
+                return;
+            }
             console.log(res.data);
             if(res.data.code==201){
                 window.location.href="/#/NoAuth";
@@ -78,6 +86,39 @@ export default {
             }else{
                 return;
             }
+        },
+        newToken(){
+            axios({
+                method:"POST",
+                url:"http://localhost:8001/getNewToken",
+                data:{
+                    "token":localStorage.getItem('token'),
+                    "refreshToken":localStorage.getItem('refreshToken')
+                }
+            })
+            .then((res)=>{
+                console.log(res);
+                if(res.data.code==215){
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('refreshToken');
+                    alert("재로그인 해주세요");
+                    window.location.href="/#/"
+                    
+                }else if(res.data.code==220){
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('refreshToken');
+                    alert("재로그인 해주세요");
+                    window.location.href="/#/"
+                }else{
+                    localStorage.setItem('token',res.data.token);
+                    return;
+                }
+            })
+            .catch({
+                function (error) {
+                    console.log(error+"error");
+                }
+            });
         }
     },
     data(){

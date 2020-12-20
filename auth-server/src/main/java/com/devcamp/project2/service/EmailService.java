@@ -8,6 +8,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -61,6 +62,17 @@ public class EmailService {
         redisTemplate.setValueSerializer(new StringRedisSerializer());
         redisTemplate.opsForValue().set(randomLink,Long.toString(id));
         redisTemplate.expire(sendTo,1, TimeUnit.DAYS);
+        sendMail(MailDto.builder().sendTo(sendTo).message(message).title(title).build());
+    }//가입시 이메일 인증
+
+    public void sendEmailFindPassword(String sendTo){
+        int randomNum = (int) (Math.random() * 1000000);
+        String message = "5분안에 인증번호를 입력해주세요. 인증번호는 다음과 같습니다. \n" + randomNum;
+        String title = "비밀번호 인증번호";
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
+        redisTemplate.opsForValue().set(sendTo, Integer.toString(randomNum));
+        redisTemplate.expire(sendTo,5, TimeUnit.MINUTES);
         sendMail(MailDto.builder().sendTo(sendTo).message(message).title(title).build());
     }//가입시 이메일 인증
 }

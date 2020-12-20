@@ -1,10 +1,8 @@
 <template>
     <div>
+       <div>
        <div> 
             <form>
-                Id : <input v-model="email" type="email" id="uid" name="uid" placeholder="Id">
-                <button @click="checkEmail()">Check Email</button>
-                <br>
                 Password : <input v-model="password" type="password" id="password" name="password" placeholder="Password">
                 <br>
                 confirm Password : <input v-model="cpassword" type="password" name="cpassword" placeholder="Password">
@@ -12,6 +10,7 @@
             <br>
         <button @click="submit" value="submit">submit</button></div>
         <div v-if="message!=null">{{message}}</div>
+    </div>
     </div>
 </template>
 <style>
@@ -24,30 +23,7 @@
 import axios from "axios"
 export default {
     methods:{
-        checkEmail(){
-            axios({
-                method:"POST",
-                url:"http://localhost:8001/checkEmail",
-                data:{
-                    email:this.email
-                },
-            })
-            .then((res)=>{
-                if(res.data){
-                    alert("가입 가능합니다");
-                    this.checkEmailValidate=true;
-                    return;
-                }else{
-                    alert("이미 가입된 메일입니다.");
-                    return;
-                }
-            })
-        },
         submit(){
-            if(!this.isEmail(this.email)){
-                this.message="이메일 형식으로 맞춰주세요"
-                return;
-            }
             if(this.password!=this.cpassword){
                 this.message="재확인 비밀번호와 비밀번호가 다릅니다."
                 return;
@@ -56,18 +32,19 @@ export default {
             
             axios({
                 method:"POST",
-                url:"http://localhost:8001/join",
+                url:"http://localhost:8001/changePassword",
                 data:{
-                    uid:this.email,
+                    certifyToken:localStorage.getItem("certiToken"),
                     password:this.password
                 },
             })
             .then((res)=>{
                 console.log(res.data);
-                if(res.data.code==201){
-                this.message=res.data.message;
-                }else{
-                window.location.href="/"
+                if(res.data.code==300){//토큰이 유효하지 않으면
+                    this.message=res.data.message;
+                }else{//성공시
+                    alert("비밀번호 변경이 완료되었습니다.")
+                    window.location.href="/#/"
                 }
             })
             .catch({

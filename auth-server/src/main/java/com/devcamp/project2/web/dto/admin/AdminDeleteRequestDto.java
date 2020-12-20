@@ -1,4 +1,4 @@
-package com.devcamp.project2.web.dto;
+package com.devcamp.project2.web.dto.admin;
 
 import lombok.Getter;
 import lombok.Setter;
