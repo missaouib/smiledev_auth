@@ -36,12 +36,13 @@ export default {
         })
         .then((res)=>{
             console.log(res);
-            //res.data.code==400
-            var a = 1;
-            console.log(a==1);
-            if(a==1){
+            if(res.data.code==401){
                 this.newToken();
                 return;
+            }else if(res.data.code==400){
+                localStorage.removeItem('token');
+                localStorage.removeItem('refreshToken');
+                alert("재로그인 해주세요");
             }
             console.log(res.data);
             if(res.data.code==201){

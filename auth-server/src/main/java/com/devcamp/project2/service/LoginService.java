@@ -179,9 +179,13 @@ public class LoginService implements InitializingBean {
 
     public JoinResponseDto join(JoinRequestDto joinRequestDto) {
         try {
+            User user = userRepository.findFirstByUid(joinRequestDto.getUid());
+            if(user!=null){
+                return JoinResponseDto.builder().code(201).message("이미 존재하는 이메일입니다.").build();
+            }
             String salt = BCrypt.gensalt(8);
             String hashedPassword = BCrypt.hashpw(joinRequestDto.getPassword() + salt, BCrypt.gensalt());
-            User user = userRepository.save(User.builder().uid(joinRequestDto.getUid()).password(hashedPassword).salt(salt).build());
+            user = userRepository.save(User.builder().uid(joinRequestDto.getUid()).password(hashedPassword).salt(salt).build());
             emailService.sendEmailVerifier(user.getUid(),user.getId());
             return JoinResponseDto.builder().code(200).message("success").build();
         } catch (Exception e) {

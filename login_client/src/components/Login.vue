@@ -39,7 +39,12 @@ export default {
               console.log(res);
               if(res.data.code==201){
                 this.message=res.data.message;
-              }else{
+                return;
+              }else if(res.data.code==202){
+                this.message=res.data.message;
+                return;
+              }
+              else{
                 localStorage.setItem("token",res.data.token);
                 localStorage.setItem("refreshToken",res.data.refreshToken);
                 window.location.href="/"
